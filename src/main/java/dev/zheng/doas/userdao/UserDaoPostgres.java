@@ -7,7 +7,7 @@ import dev.zheng.utils.ConnectionUtil;
 import java.sql.*;
 import java.util.List;
 
-public class UserDaoPostgres implements UserDAO {
+public class UserDaoPostgres implements UserDao {
     @Override
     public User createUser(User user) {
         try(Connection conn = ConnectionUtil.createConnection()){

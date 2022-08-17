@@ -1,7 +1,9 @@
 package dev.zheng.tests.daotests;
 
-import dev.zheng.doas.userdao.UserDao;
-import dev.zheng.doas.userdao.UserDaoPostgres;
+import dev.zheng.doas.complaintdao.ComplaintDao;
+import dev.zheng.doas.complaintdao.ComplaintDaoPostgres;
+import dev.zheng.entities.Complaint;
+import dev.zheng.entities.Priority;
 import dev.zheng.entities.User;
 import dev.zheng.entities.UserTitle;
 import dev.zheng.utils.ConnectionUtil;
@@ -12,18 +14,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class UserDaoTests {
-
-    static UserDao userDao = new UserDaoPostgres();
-
+public class ComplaintDaoTest {
+    static ComplaintDao complaintDao = new ComplaintDaoPostgres();
     @BeforeAll
     static void createTable(){
         try(Connection conn = ConnectionUtil.createConnection()){
-            String sql = "create table app_user(\n" +
-                    "\tuserid serial primary key,\n" +
-                    "\tuser_name varchar(50) not null unique,\n" +
-                    "\tpassword varchar(50) not null unique,\n" +
-                    "\ttitle varchar(20) not null\n" +
+            String sql = "create table complaint(\n" +
+                    "\tid serial primary key,\n" +
+                    "\tdescription varchar(200) not null,\n" +
+                    "\tpriority varchar(20) default 'UNASSIGNED',\n" +
+                    "\tmeeting_id int references meeting(id) default -1\n" +
                     ");\n";
             Statement statement = conn.createStatement();
             statement.execute(sql);
@@ -36,14 +36,15 @@ public class UserDaoTests {
     @Test
     @Order(1)
     void createUserTest(){
-        User user = new User(0, "zuojun", "zheng", UserTitle.COUNCIL);
-        User savedUser = userDao.createUser(user);
-        Assertions.assertNotEquals(0, savedUser.getId());
+        Complaint complaint = new Complaint(0, "zuojun", Priority.UNASSIGNED, -1);
+        Complaint savedComplaint = complaintDao.createComplaint(complaint);
+        Assertions.assertNotEquals(0, savedComplaint.getId());
     }
+
     @AfterAll
     static void dropTable(){
         try(Connection conn = ConnectionUtil.createConnection()){
-            String sql = "drop table app_user";
+            String sql = "drop table complaint";
             Statement statement = conn.createStatement();
             statement.execute(sql);
 

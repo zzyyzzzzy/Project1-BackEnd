@@ -12,6 +12,7 @@ import org.junit.jupiter.api.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ComplaintDaoTest {
@@ -21,10 +22,11 @@ public class ComplaintDaoTest {
         try(Connection conn = ConnectionUtil.createConnection()){
             String sql = "create table complaint(\n" +
                     "\tid serial primary key,\n" +
+                    "\tsummary varchar(30) not null,\n" +
                     "\tdescription varchar(200) not null,\n" +
                     "\tpriority varchar(20) default 'UNASSIGNED',\n" +
                     "\tmeeting_id int references meeting(id) default -1\n" +
-                    ");\n";
+                    ");";
             Statement statement = conn.createStatement();
             statement.execute(sql);
 
@@ -35,10 +37,19 @@ public class ComplaintDaoTest {
 
     @Test
     @Order(1)
-    void createUserTest(){
-        Complaint complaint = new Complaint(0, "zuojun", Priority.UNASSIGNED, -1);
+    void create_complaint_test(){
+        Complaint complaint = new Complaint(0, "emergency","Clear the road", Priority.HIGH, -1);
         Complaint savedComplaint = complaintDao.createComplaint(complaint);
         Assertions.assertNotEquals(0, savedComplaint.getId());
+        Assertions.assertEquals(Priority.UNASSIGNED, savedComplaint.getPriority());
+    }
+
+    @Test
+    @Order(1)
+    void get_all_complaints_test(){
+        Complaint complaint = new Complaint(0, "Help!","HAHAHAHAHAHA", Priority.HIGH, -1);
+        List<Complaint> allComplaints = complaintDao.getAllComplaints();
+        Assertions.assertNotEquals(2, allComplaints.size());
     }
 
     @AfterAll

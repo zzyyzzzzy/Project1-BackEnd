@@ -4,12 +4,14 @@ import java.util.Objects;
 
 public class Complaint {
     private int id;
+    private String summary;
     private String description;
     private Priority priority;
     private int meetingId;
 
-    public Complaint(int id, String description, Priority priority, int meetingId) {
+    public Complaint(int id, String summary, String description, Priority priority, int meetingId) {
         this.id = id;
+        this.summary = summary;
         this.description = description;
         this.priority = priority;
         this.meetingId = meetingId;
@@ -21,6 +23,14 @@ public class Complaint {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     public String getDescription() {
@@ -52,11 +62,11 @@ public class Complaint {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Complaint complaint = (Complaint) o;
-        return id == complaint.id && meetingId == complaint.meetingId && description.equals(complaint.description) && priority == complaint.priority;
+        return id == complaint.id && meetingId == complaint.meetingId && summary.equals(complaint.summary) && description.equals(complaint.description) && priority == complaint.priority;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, priority, meetingId);
+        return Objects.hash(id, summary, description, priority, meetingId);
     }
 }

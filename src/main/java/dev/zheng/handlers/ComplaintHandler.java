@@ -25,4 +25,7 @@ public class ComplaintHandler {
         }
     };
 
+    public Handler getAllComplaints = ctx -> {
+        ctx.result(gson.toJson(complaintService.retrieveAllComplaints()));
+    };
 }

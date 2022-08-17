@@ -14,8 +14,9 @@ public class App {
         ComplaintService complaintService = new ComplaintServiceImpl(new ComplaintDaoPostgres());
         ComplaintHandler complaintHandler = new ComplaintHandler(complaintService);
 
+        //complaints routes
         app.post("complaints", complaintHandler.createComplaint);
-
+        app.get("complaints", complaintHandler.getAllComplaints);
         app.start();
     }
 }

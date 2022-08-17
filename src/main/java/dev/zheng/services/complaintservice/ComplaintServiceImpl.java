@@ -4,6 +4,8 @@ import dev.zheng.doas.complaintdao.ComplaintDao;
 import dev.zheng.entities.Complaint;
 import dev.zheng.services.complaintservice.exceptions.NullComplaintDescriptionsException;
 
+import java.util.List;
+
 public class ComplaintServiceImpl implements ComplaintService{
 
     ComplaintDao complaintDao;
@@ -21,6 +23,11 @@ public class ComplaintServiceImpl implements ComplaintService{
     public Complaint addComplaint(Complaint complaint) {
         checkNull(complaint);
         return complaintDao.createComplaint(complaint);
+    }
+
+    @Override
+    public List<Complaint> retrieveAllComplaints() {
+        return complaintDao.getAllComplaints();
     }
 
 }

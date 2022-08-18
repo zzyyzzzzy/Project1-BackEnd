@@ -4,8 +4,12 @@ import com.google.gson.Gson;
 import dev.zheng.doas.complaintdao.ComplaintDao;
 import dev.zheng.entities.Complaint;
 import dev.zheng.services.complaintservice.ComplaintService;
+import dev.zheng.services.complaintservice.exceptions.InvalidComplaintIdException;
+import dev.zheng.services.complaintservice.exceptions.InvalidPriorityException;
 import dev.zheng.services.complaintservice.exceptions.NullComplaintDescriptionsException;
 import io.javalin.http.Handler;
+
+import java.util.Map;
 
 public class ComplaintHandler {
     private Gson gson = new Gson();
@@ -27,5 +31,24 @@ public class ComplaintHandler {
 
     public Handler getAllComplaints = ctx -> {
         ctx.result(gson.toJson(complaintService.retrieveAllComplaints()));
+    };
+
+    public Handler getOneComplaint = ctx -> {
+
+    };
+
+    public Handler updateComplaintPriority = ctx -> {
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        String priority  = ctx.pathParam("priority");
+        try{
+            Map<String, String> updatedComplaint = complaintService.updateComplaintPriority(id, priority);
+            ctx.result(gson.toJson(updatedComplaint));
+        } catch (InvalidComplaintIdException err){
+            ctx.result("Complaint id not found");
+            ctx.status(404);
+        } catch(InvalidPriorityException err){
+            ctx.result("Cannot to change to a invalid status");
+            ctx.status(400);
+        }
     };
 }

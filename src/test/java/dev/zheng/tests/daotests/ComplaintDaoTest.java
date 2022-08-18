@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Map;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ComplaintDaoTest {
@@ -45,22 +46,41 @@ public class ComplaintDaoTest {
     }
 
     @Test
-    @Order(1)
+    @Order(2)
+    void get_complaint_test(){
+        Complaint savedComplaint = complaintDao.getOneComplaint(1);
+        Assertions.assertEquals(Priority.UNASSIGNED, savedComplaint.getPriority());
+        Assertions.assertEquals("Clear the road", savedComplaint.getDescription());
+
+    }
+
+    @Test
+    @Order(3)
     void get_all_complaints_test(){
         Complaint complaint = new Complaint(0, "Help!","HAHAHAHAHAHA", Priority.HIGH, -1);
+        complaintDao.createComplaint(complaint);
         List<Complaint> allComplaints = complaintDao.getAllComplaints();
-        Assertions.assertNotEquals(2, allComplaints.size());
+        Assertions.assertEquals(2, allComplaints.size());
+    }
+    @Test
+    @Order(4)
+    void update_complaint_priority_test(){
+        Map<String, String> successEg = complaintDao.updatePriority(1, Priority.HIGH);
+        Map<String, String> failedEg = complaintDao.updatePriority(3, Priority.HIGH);
+
+        Assertions.assertEquals(Priority.HIGH.toString(), successEg.get("priority"));
+        Assertions.assertNull(failedEg);
     }
 
-    @AfterAll
-    static void dropTable(){
-        try(Connection conn = ConnectionUtil.createConnection()){
-            String sql = "drop table complaint";
-            Statement statement = conn.createStatement();
-            statement.execute(sql);
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
+//    @AfterAll
+//    static void dropTable(){
+//        try(Connection conn = ConnectionUtil.createConnection()){
+//            String sql = "drop table complaint";
+//            Statement statement = conn.createStatement();
+//            statement.execute(sql);
+//
+//        }catch (SQLException e){
+//            e.printStackTrace();
+//        }
+//    }
 }

@@ -17,6 +17,7 @@ public class App {
         //complaints routes
         app.post("complaints", complaintHandler.createComplaint);
         app.get("complaints", complaintHandler.getAllComplaints);
+        app.patch("complaints/{id}/{priority}", complaintHandler.updateComplaintPriority);
         app.start();
     }
 }

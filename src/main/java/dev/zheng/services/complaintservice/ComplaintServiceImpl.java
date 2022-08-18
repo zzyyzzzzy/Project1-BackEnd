@@ -44,9 +44,13 @@ public class ComplaintServiceImpl implements ComplaintService{
 
     @Override
     public Map<String, String> updateComplaintPriority(int id, String priority) {
+
         Complaint oldComplaint = complaintDao.getOneComplaint(id);
         if (oldComplaint == null){
             throw new InvalidComplaintIdException("Complaint id not found");
+        }
+        if(priority.equalsIgnoreCase("ignore")){
+            priority = priority + "d";
         }
         String upperCasedPriority = priority.toUpperCase();
         Priority actualPriority = convertPriorityToEnum(upperCasedPriority);

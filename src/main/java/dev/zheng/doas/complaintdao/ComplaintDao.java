@@ -11,6 +11,6 @@ public interface ComplaintDao {
     Complaint getOneComplaint(int id);
     List<Complaint> getAllComplaints ();
     Map<String, String> updatePriority(int id, Priority priority);
-    Complaint updateAttachedMeeting(int id, int meetId);
+    boolean updateAttachedMeeting(int complaintId, int meetingId);
 
 }

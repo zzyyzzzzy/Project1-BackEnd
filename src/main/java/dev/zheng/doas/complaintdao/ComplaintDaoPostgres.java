@@ -94,14 +94,25 @@ public class ComplaintDaoPostgres implements ComplaintDao{
                 return null;
             }
         }catch (SQLException err){
+            err.printStackTrace();
             System.out.println("Unable to update priority due to SQL exception occurred");
             return null;
         }
     }
 
     @Override
-    public Complaint updateAttachedMeeting(int id, int meetId) {
-        return null;
+    public boolean updateAttachedMeeting(int complaintId, int meetingId) {
+        try(Connection conn = ConnectionUtil.createConnection()){
+            String sql = "update complaint set meeting_id=? where id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, meetingId);
+            ps.setInt(2, complaintId);
+            return ps.executeUpdate() > 0;
+        }catch (SQLException err){
+            err.printStackTrace();
+            System.out.println("Unable to update priority due to SQL exception occurred");
+            return false;
+        }
     }
 
 

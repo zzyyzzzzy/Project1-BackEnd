@@ -35,10 +35,18 @@ public class MeetingDaoTest {
 //    }
     @Test
     @Order(1)
-    void create_complaint_test(){
+    void create_meeting_test(){
         Meeting meeting = new Meeting(0, "Meeting number 1","City Hall", 1660856609);
         Meeting savedMeeting = meetingDao.createMeeting(meeting);
         Assertions.assertNotEquals(0, savedMeeting.getId());
+    }
+
+    @Test
+    @Order(1)
+    void get_all_meetings_test(){
+        Meeting meeting = new Meeting(0, "Meeting number 2","City Hall", 1660770209);
+        Meeting savedMeeting = meetingDao.createMeeting(meeting);
+        Assertions.assertEquals(3, meetingDao.getAllMeetings().size());
     }
 
 }

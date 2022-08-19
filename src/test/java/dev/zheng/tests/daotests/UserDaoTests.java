@@ -20,11 +20,13 @@ public class UserDaoTests {
     static void createTable(){
         try(Connection conn = ConnectionUtil.createConnection()){
             String sql = "create table app_user(\n" +
-                    "\tuserid serial primary key,\n" +
+                    "\tid serial primary key,\n" +
+                    "\tfname varchar(50) not null,\n" +
+                    "\tlname varchar(50) not null,\n" +
                     "\tuser_name varchar(50) not null unique,\n" +
-                    "\tpassword varchar(50) not null unique,\n" +
+                    "\tpassword varchar(50) not null,\n" +
                     "\ttitle varchar(20) not null\n" +
-                    ");\n";
+                    ");";
             Statement statement = conn.createStatement();
             statement.execute(sql);
 
@@ -36,7 +38,7 @@ public class UserDaoTests {
     @Test
     @Order(1)
     void createUserTest(){
-        User user = new User(0, "zuojun", "zheng", UserTitle.COUNCIL);
+        User user = new User(0, "zuojun", "zheng", "nice123", "demon",UserTitle.COUNCIL);
         User savedUser = userDao.createUser(user);
         Assertions.assertNotEquals(0, savedUser.getId());
     }

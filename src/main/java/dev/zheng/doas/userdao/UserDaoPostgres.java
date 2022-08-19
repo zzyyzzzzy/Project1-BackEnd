@@ -11,11 +11,13 @@ public class UserDaoPostgres implements UserDao {
     @Override
     public User createUser(User user) {
         try(Connection conn = ConnectionUtil.createConnection()){
-            String sql = "insert into users values(default, ?, ?, ?)";
+            String sql = "insert into app_user values(default, ?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, user.getUserName());
-            ps.setString(2, user.getPassword());
-            ps.setString(3, user.getTitle().toString());
+            ps.setString(1, user.getFname());
+            ps.setString(2, user.getLname());
+            ps.setString(3, user.getUserName());
+            ps.setString(4, user.getPassword());
+            ps.setString(5, user.getTitle().toString());
             ps.execute();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -26,6 +28,7 @@ public class UserDaoPostgres implements UserDao {
             return user;
 
         }catch (SQLException err){
+            err.printStackTrace();
             System.out.println("Unable to create a user due to SQL exception occurred");
             return null;
         }

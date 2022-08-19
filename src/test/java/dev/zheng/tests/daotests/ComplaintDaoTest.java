@@ -71,6 +71,14 @@ public class ComplaintDaoTest {
         Assertions.assertEquals(Priority.HIGH.toString(), successEg.get("priority"));
         Assertions.assertNull(failedEg);
     }
+    @Test
+    @Order(5)
+    void update_complaint_meeting_test(){
+        boolean updateSuccess = complaintDao.updateAttachedMeeting(1, 1);
+        boolean updateFailed = complaintDao.updateAttachedMeeting(1, 4);
+        Assertions.assertTrue(updateSuccess);
+        Assertions.assertFalse(updateFailed);
+    }
 
 //    @AfterAll
 //    static void dropTable(){

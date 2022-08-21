@@ -9,4 +9,5 @@ public interface ComplaintService {
     Complaint addComplaint(Complaint complaint);
     List<Complaint> retrieveAllComplaints();
     Map<String, String> updateComplaintPriority(int id, String priority);
+    boolean attachComplaintToMeeting(int ComplaintId,int meetingId);
 }

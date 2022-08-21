@@ -14,20 +14,19 @@ public class ComplaintServiceImpl implements ComplaintService{
 
     ComplaintDao complaintDao;
 
-    private Priority convertPriorityToEnum(String priority){
-        try{
-            return Priority.valueOf(priority);
-        } catch (IllegalArgumentException e){
-            return null;
-        }
-    }
-
     public ComplaintServiceImpl(ComplaintDao complaintDao){
         this.complaintDao = complaintDao;
     }
     private void checkNull(Complaint complaint){
         if(complaint.getDescription() == null){
             throw new NullComplaintDescriptionsException("Descriptions cannot be empty");
+        }
+    }
+    private Priority convertPriorityToEnum(String priority){
+        try{
+            return Priority.valueOf(priority);
+        } catch (IllegalArgumentException e){
+            return null;
         }
     }
 
@@ -58,6 +57,11 @@ public class ComplaintServiceImpl implements ComplaintService{
             throw new InvalidPriorityException("Invalid priority status");
         }
         return complaintDao.updatePriority(id, actualPriority);
+    }
+
+    @Override
+    public boolean attachComplaintToMeeting(int complaintId, int meetingId) {
+        return complaintDao.updateAttachedMeeting(complaintId, meetingId);
     }
 
 }

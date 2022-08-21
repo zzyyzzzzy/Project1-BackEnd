@@ -45,7 +45,7 @@ public class MeetingDaoTest {
     @Order(1)
     void get_all_meetings_test(){
         Meeting meeting = new Meeting(0, "Meeting number 2","City Hall", 1660770209);
-        Meeting savedMeeting = meetingDao.createMeeting(meeting);
+        meetingDao.createMeeting(meeting);
         Assertions.assertEquals(3, meetingDao.getAllMeetings().size());
     }
 

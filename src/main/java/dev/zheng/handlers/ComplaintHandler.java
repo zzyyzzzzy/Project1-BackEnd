@@ -33,10 +33,6 @@ public class ComplaintHandler {
         ctx.result(gson.toJson(complaintService.retrieveAllComplaints()));
     };
 
-    public Handler getOneComplaint = ctx -> {
-
-    };
-
     public Handler updateComplaintPriority = ctx -> {
         int id = Integer.parseInt(ctx.pathParam("id"));
         String priority  = ctx.pathParam("priority");
@@ -49,6 +45,17 @@ public class ComplaintHandler {
         } catch(InvalidPriorityException err){
             ctx.result("Cannot to change to a invalid status");
             ctx.status(400);
+        }
+    };
+
+    public Handler updateAttachedMeeting = ctx -> {
+        int complaintId = Integer.parseInt(ctx.pathParam("complaint_id"));
+        int meetingId = Integer.parseInt(ctx.pathParam("meeting_id"));
+        if (complaintService.attachComplaintToMeeting(complaintId, meetingId)){
+            ctx.result("Meeting Id " + meetingId + " successfully attached to complaint Id " + complaintId);
+        } else{
+            ctx.status(404);
+            ctx.result("Cannot find the meeting or complaint");
         }
     };
 }

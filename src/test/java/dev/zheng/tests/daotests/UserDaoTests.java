@@ -25,7 +25,8 @@ public class UserDaoTests {
                     "\tlname varchar(50) not null,\n" +
                     "\tuser_name varchar(50) not null unique,\n" +
                     "\tpassword varchar(50) not null,\n" +
-                    "\ttitle varchar(20) not null\n" +
+                    "\ttitle varchar(20) not null,\n" +
+                    "\tapproved boolean default false\n" +
                     ");";
             Statement statement = conn.createStatement();
             statement.execute(sql);
@@ -38,7 +39,7 @@ public class UserDaoTests {
     @Test
     @Order(1)
     void createUserTest(){
-        User user = new User(0, "zuojun", "zheng", "nice123", "demon",UserTitle.COUNCIL);
+        User user = new User(0, "zuojun", "zheng", "nice123", "demon",UserTitle.COUNCIL, true);
         User savedUser = userDao.createUser(user);
         Assertions.assertNotEquals(0, savedUser.getId());
     }

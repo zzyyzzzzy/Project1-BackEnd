@@ -10,14 +10,16 @@ public class User {
     private String userName;
     private String password;
     private UserTitle title;
+    private boolean approved ;
 
-    public User(int id, String fname, String lname, String userName, String password, UserTitle title) {
+    public User(int id, String fname, String lname, String userName, String password, UserTitle title, boolean approved) {
         this.id = id;
         this.fname = fname;
         this.lname = lname;
         this.userName = userName;
         this.password = password;
         this.title = title;
+        this.approved = approved;
     }
 
     public int getId() {
@@ -68,16 +70,36 @@ public class User {
         this.title = title;
     }
 
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", fname='" + fname + '\'' +
+                ", lname='" + lname + '\'' +
+                ", userName='" + userName + '\'' +
+                ", title=" + title +
+                ", approved=" + approved +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && fname.equals(user.fname) && lname.equals(user.lname) && userName.equals(user.userName) && password.equals(user.password) && title == user.title;
+        return id == user.id && approved == user.approved && fname.equals(user.fname) && lname.equals(user.lname) && userName.equals(user.userName) && password.equals(user.password) && title == user.title;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fname, lname, userName, password, title);
+        return Objects.hash(id, fname, lname, userName, password, title, approved);
     }
 }

@@ -48,6 +48,16 @@ public class Meeting {
     }
 
     @Override
+    public String toString() {
+        return "Meeting{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", location='" + location + '\'' +
+                ", meetingDate=" + meetingDate +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

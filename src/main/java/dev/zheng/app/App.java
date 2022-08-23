@@ -2,12 +2,16 @@ package dev.zheng.app;
 
 import dev.zheng.doas.complaintdao.ComplaintDaoPostgres;
 import dev.zheng.doas.meetingdao.MeetingDaoPostgres;
+import dev.zheng.doas.userdao.UserDaoPostgres;
 import dev.zheng.handlers.ComplaintHandler;
 import dev.zheng.handlers.MeetingHandler;
+import dev.zheng.handlers.UserHandler;
 import dev.zheng.services.complaintservice.ComplaintService;
 import dev.zheng.services.complaintservice.ComplaintServiceImpl;
 import dev.zheng.services.meetingservice.MeetingService;
 import dev.zheng.services.meetingservice.MeetingServiceImpl;
+import dev.zheng.services.userservice.UserService;
+import dev.zheng.services.userservice.UserServiceImpl;
 import io.javalin.Javalin;
 
 public class App {
@@ -20,6 +24,9 @@ public class App {
 
         MeetingService meetingService = new MeetingServiceImpl(new MeetingDaoPostgres());
         MeetingHandler meetingHandler = new MeetingHandler(meetingService);
+
+        UserService userService = new UserServiceImpl(new UserDaoPostgres());
+        UserHandler userHandler = new UserHandler(userService);
         //complaints routes
         app.post("complaints", complaintHandler.createComplaint);
         app.get("complaints", complaintHandler.getAllComplaints);
@@ -30,5 +37,8 @@ public class App {
         app.post("meetings", meetingHandler.createMeeting);
         app.get("meetings", meetingHandler.getAllMeetings);
         app.start();
+
+        //users routes
+        app.post("users", userHandler.createUser);
     }
 }

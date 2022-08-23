@@ -6,7 +6,7 @@ import dev.zheng.entities.Complaint;
 import dev.zheng.services.complaintservice.ComplaintService;
 import dev.zheng.services.complaintservice.exceptions.InvalidComplaintIdException;
 import dev.zheng.services.complaintservice.exceptions.InvalidPriorityException;
-import dev.zheng.services.complaintservice.exceptions.NullComplaintDescriptionsException;
+import dev.zheng.services.complaintservice.exceptions.NullComplaintBodyException;
 import io.javalin.http.Handler;
 
 import java.util.Map;
@@ -23,7 +23,7 @@ public class ComplaintHandler {
             Complaint savedComplaint = complaintService.addComplaint(complaint);
             ctx.status(201);
             ctx.result(gson.toJson(savedComplaint));
-        } catch (NullComplaintDescriptionsException err){
+        } catch (NullComplaintBodyException err){
             ctx.status(400);
             ctx.result("Description should not be empty");
         }

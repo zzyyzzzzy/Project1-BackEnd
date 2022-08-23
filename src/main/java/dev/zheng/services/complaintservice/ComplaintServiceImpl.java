@@ -5,7 +5,7 @@ import dev.zheng.entities.Complaint;
 import dev.zheng.entities.Priority;
 import dev.zheng.services.complaintservice.exceptions.InvalidComplaintIdException;
 import dev.zheng.services.complaintservice.exceptions.InvalidPriorityException;
-import dev.zheng.services.complaintservice.exceptions.NullComplaintDescriptionsException;
+import dev.zheng.services.complaintservice.exceptions.NullComplaintBodyException;
 
 import java.util.List;
 import java.util.Map;
@@ -18,8 +18,8 @@ public class ComplaintServiceImpl implements ComplaintService{
         this.complaintDao = complaintDao;
     }
     private void checkNull(Complaint complaint){
-        if(complaint.getDescription() == null){
-            throw new NullComplaintDescriptionsException("Descriptions cannot be empty");
+        if(complaint.getDescription() == null || complaint.getSummary() == null){
+            throw new NullComplaintBodyException("Descriptions or summary cannot be empty");
         }
     }
     private Priority convertPriorityToEnum(String priority){

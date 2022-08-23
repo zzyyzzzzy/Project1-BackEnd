@@ -1,9 +1,7 @@
 package dev.zheng.services.meetingservice;
 
 import dev.zheng.doas.meetingdao.MeetingDao;
-import dev.zheng.entities.Complaint;
 import dev.zheng.entities.Meeting;
-import dev.zheng.services.complaintservice.exceptions.NullComplaintDescriptionsException;
 
 import java.util.List;
 

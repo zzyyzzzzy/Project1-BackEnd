@@ -17,6 +17,7 @@ import io.javalin.Javalin;
 public class App {
     public static void main(String[] args) {
         Javalin app = Javalin.create( config -> {
+            config.enableDevLogging();
             config.enableCorsForAllOrigins();
         });
         ComplaintService complaintService = new ComplaintServiceImpl(new ComplaintDaoPostgres());
@@ -39,6 +40,6 @@ public class App {
         app.start();
 
         //users routes
-        app.post("users", userHandler.createUser);
+        app.post("login", userHandler.loginUser);
     }
 }

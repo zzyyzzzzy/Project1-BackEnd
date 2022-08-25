@@ -25,7 +25,7 @@ public class UserDaoTests {
                     "\tlname varchar(50) not null,\n" +
                     "\tuser_name varchar(50) not null unique,\n" +
                     "\tpassword varchar(50) not null,\n" +
-                    "\ttitle varchar(20) not null,\n" +
+                    "\ttitle varchar(20) not null default 'CONSTITUENT',\n" +
                     "\tapproved boolean default false\n" +
                     ");";
             Statement statement = conn.createStatement();
@@ -38,10 +38,19 @@ public class UserDaoTests {
 
     @Test
     @Order(1)
-    void createUserTest(){
+    void create_user_test(){
         User user = new User(0, "zuojun", "zheng", "nice123", "demon",UserTitle.COUNCIL, true);
         User savedUser = userDao.createUser(user);
         Assertions.assertNotEquals(0, savedUser.getId());
+    }
+    @Test
+    @Order(2)
+    void get_user_by_username(){
+        User user = userDao.getUserByUsername("nice123");
+        User userNotExist = userDao.getUserByUsername("nic");
+        Assertions.assertEquals("zuojun", user.getFname());
+        Assertions.assertEquals("zheng", user.getLname());
+        Assertions.assertNull(userNotExist);
     }
     @AfterAll
     static void dropTable(){

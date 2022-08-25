@@ -8,13 +8,5 @@ public interface UserDao {
     // create
     User createUser(User user);
 
-    // update
-    User updateUser(User user);
-
-    // read
-    User getOneUser(int id);
-    List<User> getAllUsers();
-
-    // delete
-    boolean deleteUser(int id);
+    User getUserByUsername(String username);
 }

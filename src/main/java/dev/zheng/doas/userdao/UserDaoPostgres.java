@@ -8,16 +8,12 @@ import dev.zheng.entities.UserTitle;
 import dev.zheng.utils.ConnectionUtil;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserDaoPostgres implements UserDao {
-//    id serial primary key,
-//    fname varchar(50) not null,
-//    lname varchar(50) not null,
-//    user_name varchar(50) not null unique,
-//    password varchar(50) not null,
-//    title varchar(20) not null default 'CONSTITUENT',
-//    approved boolean not null default false
     private User userBuilder(ResultSet rs) throws SQLException{
         User user = new User(rs.getInt("id"),rs.getString("fname"),
                 rs.getString("lname"), rs.getString("user_name"),
@@ -50,6 +46,25 @@ public class UserDaoPostgres implements UserDao {
     }
 
     @Override
+    public List<User> getAllUsers() {
+        try(Connection conn = ConnectionUtil.createConnection()){
+            String sql = "select * from app_user";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            List<User> allUsers = new ArrayList<>();
+            while(rs.next()){
+                User user = userBuilder(rs);
+                allUsers.add(user);
+            }
+            return allUsers;
+        }catch (SQLException err){
+            err.printStackTrace();
+            System.out.println("Unable to get all users due to SQL exception occurred");
+            return null;
+        }
+    }
+
+    @Override
     public User getUserByUsername(String username) {
         try(Connection conn = ConnectionUtil.createConnection()){
             String sql = "select * from app_user where user_name=?";
@@ -65,5 +80,29 @@ public class UserDaoPostgres implements UserDao {
             return null;
         }
     }
+
+    @Override
+    public Map<String, String> updateUserStatus(int userId, boolean isApproved) {
+        try(Connection conn = ConnectionUtil.createConnection()){
+            String sql = "update app_user set approved=? where id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setBoolean(1, isApproved);
+            ps.setInt(2, userId);
+            Map<String, String> resMap = new HashMap<>();
+            if(ps.executeUpdate() > 0){
+                resMap.put("id", Integer.toString(userId));
+                resMap.put("approved", String.valueOf(isApproved));
+                return resMap;
+            } else{
+                System.out.println("Update Failed");
+                return null;
+            }
+        }catch (SQLException err){
+            err.printStackTrace();
+            System.out.println("Unable to change the account status due to SQL exception occurred");
+            return null;
+        }
+    }
+
 
 }

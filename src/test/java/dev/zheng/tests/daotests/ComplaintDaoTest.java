@@ -4,8 +4,6 @@ import dev.zheng.doas.complaintdao.ComplaintDao;
 import dev.zheng.doas.complaintdao.ComplaintDaoPostgres;
 import dev.zheng.entities.Complaint;
 import dev.zheng.entities.Priority;
-import dev.zheng.entities.User;
-import dev.zheng.entities.UserTitle;
 import dev.zheng.utils.ConnectionUtil;
 import org.junit.jupiter.api.*;
 

@@ -10,6 +10,8 @@ import org.junit.jupiter.api.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.Map;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserDaoTests {
@@ -39,7 +41,7 @@ public class UserDaoTests {
     @Test
     @Order(1)
     void create_user_test(){
-        User user = new User(0, "zuojun", "zheng", "nice123", "demon",UserTitle.COUNCIL, true);
+        User user = new User(0, "zuojun", "zheng", "nice123", "demon",UserTitle.CONSTITUENT, false);
         User savedUser = userDao.createUser(user);
         Assertions.assertNotEquals(0, savedUser.getId());
     }
@@ -51,6 +53,28 @@ public class UserDaoTests {
         Assertions.assertEquals("zuojun", user.getFname());
         Assertions.assertEquals("zheng", user.getLname());
         Assertions.assertNull(userNotExist);
+    }
+    @Test
+    @Order(3)
+    void change_user_status(){
+        Map<String, String> res = userDao.updateUserStatus(1, true);
+        User user = userDao.getUserByUsername("nice123");
+        Assertions.assertTrue(user.isApproved());
+    }
+
+    @Test
+    @Order(4)
+    void create_user_test_v2(){
+        User user = new User(0, "raiden", "shogun", "raiden123", "raiden123",UserTitle.CONSTITUENT, false);
+        User savedUser = userDao.createUser(user);
+        Assertions.assertNotEquals(0, savedUser.getId());
+    }
+
+    @Test
+    @Order(5)
+    void get_all_user_test(){
+        List<User> allUsers = userDao.getAllUsers();
+        Assertions.assertEquals(2, allUsers.size());
     }
     @AfterAll
     static void dropTable(){

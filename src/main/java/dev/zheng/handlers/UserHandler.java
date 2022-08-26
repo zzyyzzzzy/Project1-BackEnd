@@ -4,9 +4,12 @@ import com.google.gson.Gson;
 import dev.zheng.dtos.LoginCredentials;
 import dev.zheng.entities.User;
 import dev.zheng.services.userservice.UserService;
+import dev.zheng.services.userservice.exceptions.InvalidUserStatus;
 import dev.zheng.services.userservice.exceptions.PwdNotMatchException;
 import dev.zheng.services.userservice.exceptions.UserNotFoundException;
 import io.javalin.http.Handler;
+
+import java.util.Map;
 
 public class UserHandler {
     private Gson gson = new Gson();
@@ -39,4 +42,23 @@ public class UserHandler {
         }
     };
 
+    public Handler updateUserStatus = ctx -> {
+        int userId = Integer.parseInt(ctx.pathParam("user_id"));
+        String status = ctx.pathParam("status");
+        try{
+            Map<String, String> updatedUser= userService.patchUserStatus(userId, status);
+            if (updatedUser == null){
+                ctx.result("Cannot find user to update");
+                ctx.status(404);
+            }
+            ctx.result(gson.toJson(updatedUser));
+        }catch (InvalidUserStatus err){
+            ctx.status(400);
+            ctx.result("Invalid status to change to");
+        }
+    };
+
+    public Handler getAllUsers = ctx -> {
+        ctx.result(gson.toJson(userService.retrieveAllUsers()));
+    };
 }

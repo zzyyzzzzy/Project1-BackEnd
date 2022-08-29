@@ -1,6 +1,5 @@
 .gradle
 .idea
 bin
-gradle
 build
 run_docker.txt

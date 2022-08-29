@@ -41,6 +41,7 @@ public class App {
 
         //users routes
         app.get("users", userHandler.getAllUsers);
+        app.post("users", userHandler.createUser);
         app.post("login", userHandler.loginUser);
         app.patch("users/{user_id}/{status}", userHandler.updateUserStatus);
     }
